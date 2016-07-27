@@ -3,8 +3,8 @@ from setuptools import setup
 setup(
     name='named_decorator',
     description="""
-    Implements a decorator function named after its callees, to deal with call
-    tracing in large codebases with heavily used decorators.
+    Utility to name wrappers based on their callees, dynamically. This makes it
+    easy to trace calls in large codebases with heavily used decorators.
     """,
     url='TODO',
     version='0.0.1',
@@ -17,7 +17,6 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],

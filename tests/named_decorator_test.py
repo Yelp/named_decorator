@@ -3,43 +3,54 @@ import cProfile
 import pstats
 import six
 
-from named_decorator import rename
 from named_decorator import named_decorator
+from named_decorator import wraps
 
 
 # Simple decorator
 def with_square(method):
-    def square_wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs):
         """Dummy wrapper which squares the result of the method it wraps"""
         result = method(*args, **kwargs)
         return result*result
-    return rename(square_wrapper, method)
+    return named_decorator(wrapper, method, with_square)
 
 
 # Meta decorator (with arg)
 def with_arbitrary_power(power):
     def wrapper(method):
-        @named_decorator(method)
-        def power_wrapper(*args, **kwargs):
+        @wraps(method, with_arbitrary_power)
+        def wrapper(*args, **kwargs):
             result = method(*args, **kwargs)
             return result**power
-        return power_wrapper
+        return wrapper
     return wrapper
 
 
 @with_square
 def wicked_sum(a, b):
+    "a wicked sum"
     return a + b
 
 
 @with_arbitrary_power(3)
 def power_sum(a, b):
+    "a power sum"
     return a + b
 
 
 def test_decorators_work():
     assert 4, wicked_sum(1, 1)
     assert 27, power_sum(1, 2)
+
+
+def test_decorators_docs_and_name():
+    """Ensures that the __doc__ and __name__ correctly carry over."""
+    assert wicked_sum.__name__ == 'wicked_sum'
+    assert wicked_sum.__doc__ == 'a wicked sum'
+
+    assert power_sum.__name__ == 'power_sum'
+    assert power_sum.__doc__ == 'a power sum'
 
 
 def test_wrapper_name_is_updated_under_cprofile():
@@ -56,7 +67,7 @@ def test_wrapper_name_is_updated_under_cprofile():
     stats = pstats.Stats(profiler, stream=s).sort_stats()
     stats.print_stats()
     output = s.getvalue()
-    assert '(square_wrapper@wicked_sum)' in output
+    assert '(wicked_sum@with_square)' in output
     assert '(wicked_sum)' in output
-    assert '(power_wrapper@power_sum)' in output
+    assert '(power_sum@with_arbitrary_power)' in output
     assert '(power_sum)' in output
