@@ -3,7 +3,7 @@ import cProfile
 import pstats
 import six
 
-from named_decorator import name_decorator
+from named_decorator import rename
 
 
 def with_square(method):
@@ -11,22 +11,24 @@ def with_square(method):
         """Dummy wrapper which squares the result of the method it wraps"""
         result = method(*args, **kwargs)
         return result*result
-    return name_decorator(square_wrapper, method)
+    return rename(square_wrapper, method)
 
 
 @with_square
 def wicked_sum(a, b):
     return a + b
 
-
 def test_decorator_works():
     assert 4, wicked_sum(1, 1)
 
 
 def test_wrapper_name_is_updated_under_cprofile():
+    """Acceptance test, to make sure the problem we're trying to solve
+    (convoluted profiles) is indeed fixed.
+    """
     profiler = cProfile.Profile()
     profiler.enable()
-    wicked_sum(1, 1)
+    wicked_sum(1, 2)
     profiler.disable()
 
     s = six.StringIO()
