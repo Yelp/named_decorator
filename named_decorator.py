@@ -16,8 +16,8 @@ def name_decorator(decorator, original_func):
     c = get_function_code(decorator)
 
     updated_decorator_name = '{}@{}'.format(
-        original_func.__name__,
         decorator.__name__,
+        original_func.__name__,
     )
 
     code_type_args = code_type_args_for_rename(c, updated_decorator_name)

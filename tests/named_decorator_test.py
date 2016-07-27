@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import cProfile
+import pstats
+import six
+
 from named_decorator import name_decorator
 
 
@@ -17,3 +21,17 @@ def wicked_sum(a, b):
 
 def test_decorator_works():
     assert 4, wicked_sum(1, 1)
+
+
+def test_wrapper_name_is_updated_under_cprofile():
+    profiler = cProfile.Profile()
+    profiler.enable()
+    wicked_sum(1, 1)
+    profiler.disable()
+
+    s = six.StringIO()
+    stats = pstats.Stats(profiler, stream=s).sort_stats()
+    stats.print_stats()
+    output = s.getvalue()
+    assert '(square_wrapper@wicked_sum)' in output
+    assert '(wicked_sum)' in output
