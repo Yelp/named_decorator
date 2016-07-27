@@ -8,9 +8,10 @@ from five import code_type_args_for_rename
 from five import get_function_closure
 from five import get_function_globals
 
+
 def rename(decorator, original_func):
-    """Takes an existing decorator and renames its code object to incorporate
-    the wrapped function name.
+    """Takes an existing decorator and renames its code object to
+    incorporate the wrapped function name.
     """
     c = get_function_code(decorator)
 
@@ -29,3 +30,16 @@ def rename(decorator, original_func):
         get_function_defaults(decorator),
         get_function_closure(decorator),
     )
+
+
+def named_decorator(original_func):
+    """Decorator to name a wrapper after its callee. Usage:
+        def my_decorator(func):
+            @named_decorator(func)
+            def wrapper(*args, **kwargs):
+                # do things
+                return method(*args, **kwargs)
+    """
+    def renaming_wrapper(wrapper):
+        return rename(wrapper, original_func)
+    return renaming_wrapper
