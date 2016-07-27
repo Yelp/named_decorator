@@ -12,7 +12,7 @@ setup(
     author_email='team-perf@yelp.com',
     platforms='all',
     classifiers=[
-        'License :: Public Domain',
+        'License :: MIT',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
