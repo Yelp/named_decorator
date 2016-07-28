@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import cProfile
+import math
 import pstats
 import six
 
@@ -27,6 +28,15 @@ def with_arbitrary_power(power):
     return wrapper
 
 
+class classy_log:
+    """Log function using classes, because why not"""
+    def __init__(self, base):
+        self.base = base
+
+    def __call__(self, num):
+        return math.log(num, self.base)
+
+
 @with_square
 def wicked_sum(a, b):
     "a wicked sum"
@@ -40,8 +50,15 @@ def power_sum(a, b):
 
 
 def test_decorators_work():
-    assert 4, wicked_sum(1, 1)
-    assert 27, power_sum(1, 2)
+    assert wicked_sum(1, 1) == 4
+    assert power_sum(1, 2) == 27
+
+
+def test_classy_log():
+    """A bit of a special case because this function-like object does not have
+    a __name__. In such a case we abort.
+    """
+    assert with_arbitrary_power(42)(classy_log(2))(2) == 1
 
 
 def test_decorators_docs_and_name():
