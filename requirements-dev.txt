@@ -1,0 +1,9 @@
+-e .
+
+coverage
+flake8
+ipdb
+mock
+pre-commit
+pylint>=1.4
+pytest

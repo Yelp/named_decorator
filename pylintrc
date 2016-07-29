@@ -1,0 +1,28 @@
+[MESSAGES CONTROL]
+disable=
+    missing-docstring,
+    abstract-method,
+    old-style-class,
+    no-init,
+    no-member,
+    no-self-use,
+    too-many-public-methods,
+    invalid-name,
+    redefined-builtin,
+    locally-disabled,
+
+[REPORTS]
+output-format=colorized
+reports=no
+
+[BASIC]
+const-rgx=(([A-Za-z_][A-Za-z0-9_]*)|(__.*__))$
+
+[FORMAT]
+max-line-length=80
+
+[TYPECHECK]
+ignored-classes=pytest
+
+[DESIGN]
+min-public-methods=0
