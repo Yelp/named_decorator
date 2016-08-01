@@ -12,7 +12,7 @@ setup(
     author_email='no-reply+use_github_issues@yelp.com',
     platforms='all',
     classifiers=[
-        'License :: MIT',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
