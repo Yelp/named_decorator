@@ -17,24 +17,40 @@ It's meant as a tool to fix situations like this one...
 ```python
 from named_decorator import wraps
 
-def my_decorator(func):
-    @wraps(func, my_decorator)
-    def wrapper(*args, **kwargs):
-        # do things
-        return method(*args, **kwargs)
+def with_log_and_call(log_message):
+    def outer_wrapper(method):
+        @wraps(method, with_log_and_call)
+        def wrapper(*args, **kwargs):
+            print(log_message)
+            return method(*args, **kargs)
     return wrapper
  ```
 
-`@wraps` uses a function that you can import and use directly, if you prefer:
+You can use the function form if a decorator doesn't suit you:
 
 ```python
 from named_decorator import named_decorator
 
 def with_log_and_call(log_message):
-    def wrapper(method):
-        def inner_wrapper(*args, **kwargs):
+    def outer_wrapper(method):
+        def wrapper(*args, **kwargs):
             print(log_message)
             return method(*args, **kargs)
-        return named_decorator(inner_wrapper, method, with_log_and_call)
+        return named_decorator(wrapper, method, with_log_and_call)
     return wrapper
 ```
+
+In both examples, the `wrapper` function returned by the decorator will be renamed to
+`$CALLEE_NAME@with_log_and_call` to prevent call trees from getting mixed up
+together by a common "`wrapper`" node.
+
+
+# Why is functools.wraps insufficient?
+
+[`functool.wraps`][functools.wraps] updates a function's `__name__`. However,
+the function's code object also has a name (`.func_code.co_name`) and that is
+what [cProfile][cprofile] looks at when it traces calls.
+
+
+[functools.wraps]: https://docs.python.org/3.5/library/functools.html#functools.wraps "functools.wraps"
+[cprofile]: https://hg.python.org/cpython/file/2.7/Lib/profile.py#l289 "cprofile"
