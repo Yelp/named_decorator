@@ -1,3 +1,7 @@
+# 0.1.2 - 2016-08-01
+
+- 0.1.1 wasn't bumped in setup.py. Bumping to 0.1.2
+
 # 0.1.1 - 2016-08-01
 
 - fixed classifiers in setup.py
