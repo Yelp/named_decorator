@@ -6,10 +6,10 @@ setup(
     Utility to name wrappers based on their callees, dynamically. This makes it
     easy to trace calls in large codebases with heavily used decorators.
     """,
-    url='TODO',
-    version='0.0.1',
+    url='https://github.com/Yelp/named_decorator',
+    version='0.1.0',
     author='Yelp Performance Team',
-    author_email='team-perf@yelp.com',
+    author_email='no-reply+use_github_issues@yelp.com',
     platforms='all',
     classifiers=[
         'License :: MIT',

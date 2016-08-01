@@ -11,10 +11,18 @@ from five import get_function_globals
 
 
 def named_decorator(wrapper, wrapped, decorator):
-    """Takes a wrapper, a wrapped function and a decorator and rename the
+    """Takes a wrapper, a wrapped function and a decorator and renames the
     wrapper to look like wrapped@wrapper
 
-    Sample Usage:
+    :param wrapper: wrapper returned by the decorator
+    :type wrapper: function
+    :param wrapped: wrapped function
+    :type wrapped: function
+    :param decorator: outer decorator
+    :type decorator: function
+
+    Usage::
+
         def with_log_and_call(log_message):
             def wrapper(method):
                 def inner_wrapper(*args, **kwargs):
@@ -23,7 +31,7 @@ def named_decorator(wrapper, wrapped, decorator):
                 return named_decorator(inner_wrapper, method, with_log_and_call)
             return wrapper
     """
-    if getattr(wrapped, '__name__', None) is None:
+    if getattr(wrapped, '__name__', None) is None or getattr(decorator, '__name__', None):
         # If the wrapped function does not have a name, abort since we can't
         # assign a better name. This can happen if you're trying to wrap
         # function-like objects.
@@ -51,9 +59,15 @@ def named_decorator(wrapper, wrapped, decorator):
 
 def wraps(wrapped, decorator):
     """Decorator to name a wrapper after its callee.
-    This is a superset of functools.wraps.
+    This is a superset of ``functools.wraps``.
 
-    Usage:
+    :param wrapped: wrapped function
+    :type wrapped: function
+    :param decorator: outer decorator
+    :type decorator: function
+
+    Usage::
+
         def my_decorator(func):
             @wraps(func, my_decorator)
             def wrapper(*args, **kwargs):
