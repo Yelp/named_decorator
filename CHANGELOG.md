@@ -1,3 +1,8 @@
+# Unreleased
+
+- Adds five.py to pypi distribution
+- Adds Travis CI integration
+
 # 0.1.3 - 2016-08-01
 
 - Fixes a bug introduced in 0.1.0
