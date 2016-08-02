@@ -1,5 +1,7 @@
 # named_decorator
 
+[![Build Status](https://travis-ci.org/Yelp/named_decorator.svg?branch=master)](https://travis-ci.org/Yelp/named_decorator)
+
 `named_decorator` contains a utility function to dynamically rename a decorator
 based on its callee (the function it wraps). This is useful especially in large
 codebases with a few number of widely used decorators.
