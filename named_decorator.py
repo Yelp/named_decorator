@@ -31,7 +31,10 @@ def named_decorator(wrapper, wrapped, decorator):
                 return named_decorator(inner_wrapper, method, with_log_and_call)
             return wrapper
     """
-    if getattr(wrapped, '__name__', None) is None or getattr(decorator, '__name__', None):
+    if (
+            getattr(wrapped, '__name__', None) is None or
+            getattr(decorator, '__name__', None) is None
+    ):
         # If the wrapped function does not have a name, abort since we can't
         # assign a better name. This can happen if you're trying to wrap
         # function-like objects.

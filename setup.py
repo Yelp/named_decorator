@@ -7,7 +7,7 @@ setup(
     easy to trace calls in large codebases with heavily used decorators.
     """,
     url='https://github.com/Yelp/named_decorator',
-    version='0.1.2',
+    version='0.1.3',
     author='Yelp Performance Team',
     author_email='no-reply+use_github_issues@yelp.com',
     platforms='all',

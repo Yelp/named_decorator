@@ -1,3 +1,7 @@
+# 0.1.3 - 2016-08-01
+
+- Fixes a bug introduced in 0.1.0
+
 # 0.1.2 - 2016-08-01
 
 - 0.1.1 wasn't bumped in setup.py. Bumping to 0.1.2
