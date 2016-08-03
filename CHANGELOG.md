@@ -1,6 +1,6 @@
 # Unreleased
 
-- Void
+- No more top-level "five" namespace
 
 # 0.1.4
 
