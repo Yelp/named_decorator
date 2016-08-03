@@ -7,58 +7,85 @@ from six import get_function_defaults
 from six import PY2
 
 
-def get_function_globals(func):
-    """Gets a Python's function's globals. Works in Py2 and Py3.
-    :param func: python function
-    """
-    if PY2:
+if PY2:
+    def get_function_globals(func):
+        """Gets a Python's function's globals in Py2
+        :param func: python function
+        """
         return func.func_globals
-    else:
+else:
+    def get_function_globals(func):
+        """Gets a Python's function's globals in Py3
+        :param func: python function
+        """
         return func.__globals__
 
 
-def get_function_closure(func):
-    """Gets a Python's function's closure. Works in Py2 and Py3.
-    :param func: python function
-    """
-    if PY2:
+if PY2:
+    def get_function_closure(func):
+        """Gets a Python's function's closure in PY2
+        :param func: python function
+        """
         return func.func_closure
-    else:
+else:
+    def get_function_closure(func):
+        """Gets a Python's function's closure in PY3
+        :param func: python function
+        """
         return func.__closure__
 
 
-def code_type_args_for_rename(code_object, updated_name):
-    """Gets the list of args necessary to create a code object. This
-    encapsulates differences between Py2 and Py3.
+if PY2:
+    def code_type_args_for_rename(code_object, updated_name):
+        """Gets the list of args necessary to create a code object in Py2
 
-    :param code_object: Python code object
-    :type code_object: code
-    :param updated_name: desired name for the new code object
-    :type updated_name: str
+        :param code code_object: Python code object
+        :param str updated_name: desired name for the new code object
 
-    :rtype: list
-    """
-    code_type_args = [
-        code_object.co_argcount,
-        code_object.co_nlocals,
-        code_object.co_stacksize,
-        code_object.co_flags,
-        code_object.co_code,
-        code_object.co_consts,
-        code_object.co_names,
-        code_object.co_varnames,
-        code_object.co_filename,
-        updated_name,
-        code_object.co_firstlineno,
-        code_object.co_lnotab,
-        code_object.co_freevars,
-        code_object.co_cellvars,
-    ]
+        :rtype: list
+        """
+        return [
+            code_object.co_argcount,
+            code_object.co_nlocals,
+            code_object.co_stacksize,
+            code_object.co_flags,
+            code_object.co_code,
+            code_object.co_consts,
+            code_object.co_names,
+            code_object.co_varnames,
+            code_object.co_filename,
+            updated_name,
+            code_object.co_firstlineno,
+            code_object.co_lnotab,
+            code_object.co_freevars,
+            code_object.co_cellvars,
+        ]
+else:
+    def code_type_args_for_rename(code_object, updated_name):
+        """Gets the list of args necessary to create a code object in Py3
 
-    if not PY2:
-        code_type_args.insert(1, code_object.co_kwonlyargcount)
+        :param code code_object: Python code object
+        :param str updated_name: desired name for the new code object
 
-    return code_type_args
+        :rtype: list
+        """
+        return [
+            code_object.co_argcount,
+            code_object.co_kwonlyargcount,
+            code_object.co_nlocals,
+            code_object.co_stacksize,
+            code_object.co_flags,
+            code_object.co_code,
+            code_object.co_consts,
+            code_object.co_names,
+            code_object.co_varnames,
+            code_object.co_filename,
+            updated_name,
+            code_object.co_firstlineno,
+            code_object.co_lnotab,
+            code_object.co_freevars,
+            code_object.co_cellvars,
+        ]
 
 
 def named_decorator(wrapper, wrapped, decorator):
