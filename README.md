@@ -59,10 +59,9 @@ Use Github's pull request and issues system. To run tests:
 
 ```
 tox --skip-missing-interpreters
-(use tox2 if you're running on Yelp's internal servers)
 ```
-`--skip-missing-interpreters` will allow you to skip missing interpreters.
-Those will be tested by TravisCI when you issue a pull request.
+`--skip-missing-interpreters` allows you to skip missing interpreters.
+Those are tested by Travis CI when you issue a pull request.
 
 [functools.wraps]: https://docs.python.org/3.5/library/functools.html#functools.wraps "functools.wraps"
 [cprofile]: https://hg.python.org/cpython/file/2.7/Lib/profile.py#l289 "cprofile"
