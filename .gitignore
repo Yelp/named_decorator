@@ -9,5 +9,6 @@
 .tox
 .venv.touch
 /venv*
+build
 coverage-html
 dist

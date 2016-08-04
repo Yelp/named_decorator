@@ -22,7 +22,7 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     install_requires=['six'],
-    py_modules=['named_decorator', 'five'],
+    py_modules=['named_decorator'],
     options={
         'bdist_wheel': {
             'universal': 1,

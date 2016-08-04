@@ -4,10 +4,85 @@ from types import CodeType
 from types import FunctionType
 from six import get_function_code
 from six import get_function_defaults
+from six import PY2
 
-from five import code_type_args_for_rename
-from five import get_function_closure
-from five import get_function_globals
+
+if PY2:
+    def get_function_globals(func):
+        """Gets a Python's function's globals in Py2
+        :param func: python function
+        """
+        return func.func_globals
+
+    def get_function_closure(func):
+        """Gets a Python's function's closure in PY2
+        :param func: python function
+        """
+        return func.func_closure
+
+    def code_type_args_for_rename(code_object, updated_name):
+        """Gets the list of args necessary to create a code object in Py2
+
+        :param code code_object: Python code object
+        :param str updated_name: desired name for the new code object
+
+        :rtype: list
+        """
+        return [
+            code_object.co_argcount,
+            code_object.co_nlocals,
+            code_object.co_stacksize,
+            code_object.co_flags,
+            code_object.co_code,
+            code_object.co_consts,
+            code_object.co_names,
+            code_object.co_varnames,
+            code_object.co_filename,
+            updated_name,
+            code_object.co_firstlineno,
+            code_object.co_lnotab,
+            code_object.co_freevars,
+            code_object.co_cellvars,
+        ]
+
+else:
+    def get_function_globals(func):
+        """Gets a Python's function's globals in Py3
+        :param func: python function
+        """
+        return func.__globals__
+
+    def get_function_closure(func):
+        """Gets a Python's function's closure in PY3
+        :param func: python function
+        """
+        return func.__closure__
+
+    def code_type_args_for_rename(code_object, updated_name):
+        """Gets the list of args necessary to create a code object in Py3
+
+        :param code code_object: Python code object
+        :param str updated_name: desired name for the new code object
+
+        :rtype: list
+        """
+        return [
+            code_object.co_argcount,
+            code_object.co_kwonlyargcount,
+            code_object.co_nlocals,
+            code_object.co_stacksize,
+            code_object.co_flags,
+            code_object.co_code,
+            code_object.co_consts,
+            code_object.co_names,
+            code_object.co_varnames,
+            code_object.co_filename,
+            updated_name,
+            code_object.co_firstlineno,
+            code_object.co_lnotab,
+            code_object.co_freevars,
+            code_object.co_cellvars,
+        ]
 
 
 def named_decorator(wrapper, wrapped, decorator):

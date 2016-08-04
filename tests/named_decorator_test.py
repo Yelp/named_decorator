@@ -6,6 +6,9 @@ import six
 
 from named_decorator import named_decorator
 from named_decorator import wraps
+from named_decorator import get_function_closure
+from named_decorator import get_function_globals
+from named_decorator import code_type_args_for_rename
 
 
 # Simple decorator
@@ -88,3 +91,24 @@ def test_wrapper_name_is_updated_under_cprofile():
     assert '(wicked_sum)' in output
     assert '(power_sum@with_arbitrary_power)' in output
     assert '(power_sum)' in output
+
+
+def my_func(a, b):
+    return a+b
+
+
+def test_get_function_closure():
+    assert get_function_closure(my_func) is None
+
+
+def test_get_function_globals():
+    """Smoke test to make sure this does not crash"""
+    assert bool(get_function_globals(my_func)) is True
+
+
+def test_code_type_args():
+    expected_args_length = 14 if six.PY2 else 15
+    code = six.get_function_code(my_func)
+    actual_args = code_type_args_for_rename(code, 'new_name')
+    assert len(actual_args) == expected_args_length
+    assert 'new_name' in actual_args
