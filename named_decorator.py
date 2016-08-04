@@ -13,29 +13,13 @@ if PY2:
         :param func: python function
         """
         return func.func_globals
-else:
-    def get_function_globals(func):
-        """Gets a Python's function's globals in Py3
-        :param func: python function
-        """
-        return func.__globals__
 
-
-if PY2:
     def get_function_closure(func):
         """Gets a Python's function's closure in PY2
         :param func: python function
         """
         return func.func_closure
-else:
-    def get_function_closure(func):
-        """Gets a Python's function's closure in PY3
-        :param func: python function
-        """
-        return func.__closure__
 
-
-if PY2:
     def code_type_args_for_rename(code_object, updated_name):
         """Gets the list of args necessary to create a code object in Py2
 
@@ -60,7 +44,20 @@ if PY2:
             code_object.co_freevars,
             code_object.co_cellvars,
         ]
+
 else:
+    def get_function_globals(func):
+        """Gets a Python's function's globals in Py3
+        :param func: python function
+        """
+        return func.__globals__
+
+    def get_function_closure(func):
+        """Gets a Python's function's closure in PY3
+        :param func: python function
+        """
+        return func.__closure__
+
     def code_type_args_for_rename(code_object, updated_name):
         """Gets the list of args necessary to create a code object in Py3
 
