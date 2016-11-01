@@ -24,8 +24,9 @@ def with_log_and_call(log_message):
         @wraps(method, with_log_and_call)
         def wrapper(*args, **kwargs):
             print(log_message)
-            return method(*args, **kargs)
-    return wrapper
+            return method(*args, **kwargs)
+        return wrapper
+    return outer_wrapper
  ```
 
 You can use the function form if a decorator doesn't suit you:
@@ -37,9 +38,9 @@ def with_log_and_call(log_message):
     def outer_wrapper(method):
         def wrapper(*args, **kwargs):
             print(log_message)
-            return method(*args, **kargs)
+            return method(*args, **kwargs)
         return named_decorator(wrapper, method, with_log_and_call)
-    return wrapper
+    return outer_wrapper
 ```
 
 In both examples, the `wrapper` function returned by the decorator will be renamed to
