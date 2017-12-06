@@ -2,24 +2,10 @@
 import functools
 from types import CodeType
 from types import FunctionType
-from six import get_function_code
-from six import get_function_defaults
-from six import PY2
 
+PY2 = str is bytes
 
 if PY2:
-    def get_function_globals(func):
-        """Gets a Python's function's globals in Py2
-        :param func: python function
-        """
-        return func.func_globals
-
-    def get_function_closure(func):
-        """Gets a Python's function's closure in PY2
-        :param func: python function
-        """
-        return func.func_closure
-
     def code_type_args_for_rename(code_object, updated_name):
         """Gets the list of args necessary to create a code object in Py2
 
@@ -46,18 +32,6 @@ if PY2:
         ]
 
 else:
-    def get_function_globals(func):
-        """Gets a Python's function's globals in Py3
-        :param func: python function
-        """
-        return func.__globals__
-
-    def get_function_closure(func):
-        """Gets a Python's function's closure in PY3
-        :param func: python function
-        """
-        return func.__closure__
-
     def code_type_args_for_rename(code_object, updated_name):
         """Gets the list of args necessary to create a code object in Py3
 
@@ -115,7 +89,7 @@ def named_decorator(wrapper, wrapped, decorator):
         # function-like objects.
         return wrapper
 
-    c = get_function_code(wrapper)
+    c = wrapper.__code__
 
     updated_decorator_name = '{}@{}'.format(
         wrapped.__name__,
@@ -127,10 +101,10 @@ def named_decorator(wrapper, wrapped, decorator):
 
     updated_decorator = FunctionType(
         code,  # Use our updated code object
-        get_function_globals(wrapper),
+        wrapper.__globals__,
         updated_decorator_name,
-        get_function_defaults(wrapper),
-        get_function_closure(wrapper),
+        wrapper.__defaults__,
+        wrapper.__closure__,
     )
     return functools.update_wrapper(updated_decorator, wrapped)
 
