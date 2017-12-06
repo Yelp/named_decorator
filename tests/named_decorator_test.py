@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 import cProfile
+import io
 import math
 import pstats
-import six
 
+from named_decorator import PY2
 from named_decorator import named_decorator
 from named_decorator import wraps
-from named_decorator import get_function_closure
-from named_decorator import get_function_globals
 from named_decorator import code_type_args_for_rename
 
 
@@ -83,7 +82,7 @@ def test_wrapper_name_is_updated_under_cprofile():
     power_sum(3, 4)
     profiler.disable()
 
-    s = six.StringIO()
+    s = io.BytesIO() if PY2 else io.StringIO()
     stats = pstats.Stats(profiler, stream=s).sort_stats()
     stats.print_stats()
     output = s.getvalue()
@@ -97,18 +96,9 @@ def my_func(a, b):
     return a+b
 
 
-def test_get_function_closure():
-    assert get_function_closure(my_func) is None
-
-
-def test_get_function_globals():
-    """Smoke test to make sure this does not crash"""
-    assert bool(get_function_globals(my_func)) is True
-
-
 def test_code_type_args():
-    expected_args_length = 14 if six.PY2 else 15
-    code = six.get_function_code(my_func)
+    expected_args_length = 14 if PY2 else 15
+    code = my_func.__code__
     actual_args = code_type_args_for_rename(code, 'new_name')
     assert len(actual_args) == expected_args_length
     assert 'new_name' in actual_args
