@@ -1,3 +1,8 @@
+# 0.2.0
+
+- Drop python2 and python <3.8 version support
+- Fix compatibility issue with python 3.8+ types.CodeType
+
 # Unreleased
 
 - No more top-level "five" namespace
