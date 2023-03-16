@@ -1,62 +1,5 @@
-# -*- coding: utf-8 -*-
 import functools
-from types import CodeType
 from types import FunctionType
-
-PY2 = str is bytes
-
-if PY2:
-    def code_type_args_for_rename(code_object, updated_name):
-        """Gets the list of args necessary to create a code object in Py2
-
-        :param code code_object: Python code object
-        :param str updated_name: desired name for the new code object
-
-        :rtype: list
-        """
-        return [
-            code_object.co_argcount,
-            code_object.co_nlocals,
-            code_object.co_stacksize,
-            code_object.co_flags,
-            code_object.co_code,
-            code_object.co_consts,
-            code_object.co_names,
-            code_object.co_varnames,
-            code_object.co_filename,
-            updated_name,
-            code_object.co_firstlineno,
-            code_object.co_lnotab,
-            code_object.co_freevars,
-            code_object.co_cellvars,
-        ]
-
-else:
-    def code_type_args_for_rename(code_object, updated_name):
-        """Gets the list of args necessary to create a code object in Py3
-
-        :param code code_object: Python code object
-        :param str updated_name: desired name for the new code object
-
-        :rtype: list
-        """
-        return [
-            code_object.co_argcount,
-            code_object.co_kwonlyargcount,
-            code_object.co_nlocals,
-            code_object.co_stacksize,
-            code_object.co_flags,
-            code_object.co_code,
-            code_object.co_consts,
-            code_object.co_names,
-            code_object.co_varnames,
-            code_object.co_filename,
-            updated_name,
-            code_object.co_firstlineno,
-            code_object.co_lnotab,
-            code_object.co_freevars,
-            code_object.co_cellvars,
-        ]
 
 
 def named_decorator(wrapper, wrapped, decorator):
@@ -91,13 +34,9 @@ def named_decorator(wrapper, wrapped, decorator):
 
     c = wrapper.__code__
 
-    updated_decorator_name = '{}@{}'.format(
-        wrapped.__name__,
-        decorator.__name__,
-    )
+    updated_decorator_name = f'{wrapped.__name__}@{decorator.__name__}'
 
-    code_type_args = code_type_args_for_rename(c, updated_decorator_name)
-    code = CodeType(*code_type_args)
+    code = c.replace(co_name=updated_decorator_name)
 
     updated_decorator = FunctionType(
         code,  # Use our updated code object
