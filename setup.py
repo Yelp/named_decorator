@@ -10,21 +10,13 @@ setup(
     version='0.1.4',
     author='Yelp Performance Team',
     author_email='no-reply+use_github_issues@yelp.com',
-    platforms='all',
+    python_requires='>=3.8',
     classifiers=[
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
     ],
     py_modules=['named_decorator'],
-    options={
-        'bdist_wheel': {
-            'universal': 1,
-        }
-    },
 )
